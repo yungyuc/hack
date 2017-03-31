@@ -1,6 +1,8 @@
 #!/bin/bash
 #
 # Copyright (C) 2011 Yung-Yu Chen <yyc@solvcon.net>.
+#
+# Python development guide: https://docs.python.org/devguide/
 
 PREFIX=$YHROOT/opt
 ARCH=64
