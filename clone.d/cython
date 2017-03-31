@@ -1,0 +1,12 @@
+#!/bin/bash
+curdir=`pwd`
+dstdir="cython"
+if [ -e $dstdir ] ; then
+  echo "Destination directory \"$dstdir\" already exists; do nothing"
+else
+  if [ -z "$READONLY" ] ; then
+    git clone git@github.com:cython/cython.git $dstdir
+  else
+    git clone https://github.com/cython/cython.git $dstdir
+  fi
+fi
