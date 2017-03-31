@@ -1,0 +1,31 @@
+export YHROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+source $YHROOT/etc/bashutils.sh
+namemunge PATH $YHROOT/bin
+alias hackon='namemunge PATH $YHROOT/opt/bin'
+alias hackoff='nameremove PATH $YHROOT/opt/bin'
+
+# hclone completion.
+_hclone_cmpl() {
+  local hcloned cur prev opts
+  COMPREPLY=()
+  cur="${COMP_WORDS[COMP_CWORD]}"
+  prev="${COMP_WORDS[COMP_CWORD-1]}"
+  opts=`ls $YHROOT/clone.d`
+  COMPREPLY=( $(compgen -W "${opts}" -- ${cur}) )
+  return 0
+}
+complete -F _hclone_cmpl hclone
+
+# hbuild completion.
+_hbuild_cmpl() {
+  local hbuildd cur prev opts
+  COMPREPLY=()
+  cur="${COMP_WORDS[COMP_CWORD]}"
+  prev="${COMP_WORDS[COMP_CWORD-1]}"
+  opts=`ls $YHROOT/build.d`
+  COMPREPLY=( $(compgen -W "${opts}" -- ${cur}) )
+  return 0
+}
+complete -F _hbuild_cmpl hbuild
+
+# vim: set et nu nobomb fenc=utf8 ft=sh ff=unix sw=2 ts=2:

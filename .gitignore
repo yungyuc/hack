@@ -1,0 +1,8 @@
+# cloned source trees; the trailing slash is necessary otherwise the files of
+# the same names in *.d/ directories get ignored as well.
+cpython/
+numpy/
+# installation
+opt
+# temporary directory
+tmp

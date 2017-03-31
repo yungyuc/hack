@@ -1,0 +1,13 @@
+#!/bin/bash
+if [ -f $YHROOT/etc/bashutils.sh ]; then source $YHROOT/etc/bashutils.sh; fi
+script=$YHROOT/clone.d/$1
+if [ -e $script ] ; then
+  echo "execute cloning script \"$script\" ${@:2} ..."
+  echo
+  bash $script "${@:2}"
+  echo
+  echo "finished cloning script \"$script\"."
+else
+  echo "cloning script \"$script\" not found"
+fi
+# vim: set et nu nobomb fenc=utf8 ft=sh ff=unix sw=2 ts=2:

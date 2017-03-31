@@ -1,0 +1,13 @@
+#!/bin/bash
+if [ -f $YHROOT/etc/bashutils.sh ]; then source $YHROOT/etc/bashutils.sh; fi
+script=$YHROOT/build.d/$1
+if [ -e $script ] ; then
+  echo "execute building script \"$script\" ${@:2} ..."
+  echo
+  bash $script "${@:2}"
+  echo
+  echo "finished building script \"$script\"."
+else
+  echo "building script \"$script\" not found"
+fi
+# vim: set et nu nobomb fenc=utf8 ft=sh ff=unix sw=2 ts=2:
