@@ -1,5 +1,15 @@
 #!/bin/bash
 if [ -f $YHROOT/etc/bashutils.sh ]; then source $YHROOT/etc/bashutils.sh; fi
+
+if [ $(uname) == Darwin ] ; then
+  NP=${NP:=$(sysctl -n hw.ncpu)}
+elif [ $(uname) == Linux ] ; then
+  NP=${NP:=$(cat /proc/cpuinfo | grep processor | wc -l)}
+else
+  NP=${NP:=1}
+fi
+export NP
+
 script=$YHROOT/build.d/$1
 if [ -e $script ] ; then
   echo "execute building script \"$script\" ${@:2} ..."
