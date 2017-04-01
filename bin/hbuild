@@ -1,6 +1,38 @@
 #!/bin/bash
 if [ -f $YHROOT/etc/bashutils.sh ]; then source $YHROOT/etc/bashutils.sh; fi
 
+showrealpath () {
+ echo "$(cd "$(dirname $1)" && pwd)/$1"
+}
+export -f showrealpath
+
+download () {
+  loc=$1
+  url=$2
+  md5hash=$3
+  if [ $(uname) == Darwin ] ; then
+    md5="md5 -q"
+  elif [ $(uname) == Linux ] ; then
+    md5=md5sum
+  fi
+  if [ ! -e $loc ] || [ $md5hash != `$md5 $loc | cut -d ' ' -f 1` ] ; then
+    mkdir -p $(dirname $loc)
+    rm -f $loc
+    echo "Download from $url"
+    curl -sSL -o $loc $url
+  fi
+  if [ $md5hash != `$md5 $loc | cut -d ' ' -f 1` ] ; then
+    echo "$(basename $loc) md5 hash $md5hash but got `$md5 $loc`"
+  else
+    echo "$(basename $loc) md5 hash $md5hash confirmed"
+  fi
+}
+export -f download
+
+YHDL="${YHDL:=$YHROOT/downloaded}"
+mkdir -p $YHDL
+export YHDL="$(cd $YHDL && pwd)"
+
 if [ $(uname) == Darwin ] ; then
   NP=${NP:=$(sysctl -n hw.ncpu)}
 elif [ $(uname) == Linux ] ; then
@@ -10,7 +42,15 @@ else
 fi
 export NP
 
-script=$YHROOT/build.d/$1
+export SCRIPTDIR=$YHROOT/build.d/$1
+
+export INSTALLDIR=$YHROOT/opt
+
+script=$SCRIPTDIR/build-$1.sh
+if [ ! -e $script ]; then
+  script=$SCRIPTDIR/build.sh
+fi
+
 if [ -e $script ] ; then
   echo "execute building script \"$script\" ${@:2} ..."
   echo
@@ -18,6 +58,7 @@ if [ -e $script ] ; then
   echo
   echo "finished building script \"$script\"."
 else
-  echo "building script \"$script\" not found"
+  echo "either build-$1.sh or build.sh is found in $SCRIPTDIR/"
 fi
+
 # vim: set et nu nobomb fenc=utf8 ft=sh ff=unix sw=2 ts=2:

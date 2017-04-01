@@ -2,13 +2,9 @@
 #
 # Copyright (C) 2011 Yung-Yu Chen <yyc@solvcon.net>.
 
-PYTHON=$YHROOT/opt/bin/python3
+PYTHON=$INSTALLDIR/bin/python3
 
 # build.
-showrealpath () {
- echo "$(cd "$(dirname $1)" && pwd)/$1"
-}
-
 echo "start installation:"
 { time \
   $PYTHON setup.py install --old-and-unmanageable ; \

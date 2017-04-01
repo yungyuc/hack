@@ -6,4 +6,6 @@ pybind11/
 # installation
 opt
 # temporary directory
+downloaded
+src
 tmp
