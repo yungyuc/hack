@@ -1,8 +1,8 @@
 # cloned source trees; the trailing slash is necessary otherwise the files of
 # the same names in *.d/ directories get ignored as well.
 cpython/
-cython/
 numpy/
+pybind11/
 # installation
 opt
 # temporary directory
