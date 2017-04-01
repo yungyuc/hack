@@ -2,7 +2,7 @@
 #
 # Copyright (C) 2011 Yung-Yu Chen <yyc@solvcon.net>.
 
-PYTHON=$YHROOT/opt/bin/python3
+PYTHON=$INSTALLDIR/bin/python3
 
 # build.
 rm -f site.cfg
@@ -15,8 +15,8 @@ EOF
 elif [ $(uname) == Linux ] ; then
 cat > site.cfg << EOF
 [atlas]
-library_dirs = /usr/lib:/usr/local/lib:$YHROOT/lib
-include_dirs = /usr/lib:/usr/local/include:$YHROOT/include:$YHROOT/include/atlas
+library_dirs = /usr/lib:/usr/local/lib:$INSTALLDIR/lib
+include_dirs = /usr/lib:/usr/local/include:$INSTALLDIR/include:$INSTALLDIR/include/atlas
 atlas_libs = lapack, f77blas, cblas, atlas
 EOF
 fi
@@ -26,10 +26,6 @@ cat > setup.cfg << EOF
 [config_fc]
 fcompiler = gfortran
 EOF
-
-showrealpath () {
- echo "$(cd "$(dirname $1)" && pwd)/$1"
-}
 
 echo "start building:"
 { time $PYTHON setup.py build -j $NP ; } > build.log 2>&1

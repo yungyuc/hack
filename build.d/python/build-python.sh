@@ -4,7 +4,7 @@
 #
 # Python development guide: https://docs.python.org/devguide/
 
-PREFIX=$YHROOT/opt
+PREFIX=$INSTALLDIR
 ARCH=64
 
 mkdir -p $PREFIX/lib
@@ -31,10 +31,6 @@ if [ -n "$DEBUG" ] ; then
   cfgcmd+=("--with-pydebug")
 fi
 
-showrealpath () {
- echo "$(cd "$(dirname $1)" && pwd)/$1"
-}
-
 echo "start configuration:"
 echo "${cfgcmd[@]}"
 { time "${cfgcmd[@]}" ; } > configure.log 2>&1
@@ -53,7 +49,5 @@ echo "installation done: $(showrealpath install.log)"
 #ln -s $PREFIX/bin/pydoc3.7 $PREFIX/bin/pydoc
 
 curl https://bootstrap.pypa.io/get-pip.py | $PREFIX/bin/python3
-
-echo "built and installed python workspace"
 
 # vim: set et nobomb ff=unix fenc=utf8:

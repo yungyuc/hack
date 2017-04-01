@@ -10,7 +10,7 @@ _hclone_cmpl() {
   COMPREPLY=()
   cur="${COMP_WORDS[COMP_CWORD]}"
   prev="${COMP_WORDS[COMP_CWORD-1]}"
-  opts=`ls $YHROOT/clone.d`
+  opts=`/bin/ls $YHROOT/clone.d`
   COMPREPLY=( $(compgen -W "${opts}" -- ${cur}) )
   return 0
 }
@@ -22,7 +22,7 @@ _hbuild_cmpl() {
   COMPREPLY=()
   cur="${COMP_WORDS[COMP_CWORD]}"
   prev="${COMP_WORDS[COMP_CWORD-1]}"
-  opts=`ls $YHROOT/build.d`
+  opts=`/bin/ls $YHROOT/build.d`
   COMPREPLY=( $(compgen -W "${opts}" -- ${cur}) )
   return 0
 }
