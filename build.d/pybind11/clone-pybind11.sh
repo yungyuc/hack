@@ -1,5 +1,4 @@
 #!/bin/bash
-curdir=`pwd`
 dstdir="pybind11"
 if [ -e $dstdir ] ; then
   echo "Destination directory \"$dstdir\" already exists; do nothing"
@@ -12,3 +11,4 @@ else
     git clone http://github.com/pybind/pybind11.git $dstdir
   fi
 fi
+# vim: set et nobomb ff=unix fenc=utf8:

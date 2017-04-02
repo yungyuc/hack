@@ -27,7 +27,7 @@ cfgcmd+=("--with-ensurepip=no")
 cfgcmd+=("--with-tcltk-includes=-I$PREFIX/include")
 cfgcmd+=("--with-tcltk-libs=\"-L$PREFIX/lib -ltcl8.5 -ltk8.5\"")
 cfgcmd+=("--enable-loadable-sqlite-extensions")
-if [ -n "$DEBUG" ] ; then
+if [ "$FLAVOR" == "dbg" ] ; then
   cfgcmd+=("--with-pydebug")
 fi
 
@@ -49,5 +49,6 @@ echo "installation done: $(showrealpath install.log)"
 #ln -s $PREFIX/bin/pydoc3.7 $PREFIX/bin/pydoc
 
 curl https://bootstrap.pypa.io/get-pip.py | $PREFIX/bin/python3
+rm -f $PREFIX/bin/pip
 
 # vim: set et nobomb ff=unix fenc=utf8:

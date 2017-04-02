@@ -1,6 +1,5 @@
 #!/bin/bash
-curdir=`pwd`
-dstdir="cpython"
+dstdir="python"
 if [ -e $dstdir ] ; then
   echo "Destination directory \"$dstdir\" already exists; do nothing"
 else
@@ -12,3 +11,4 @@ else
     git clone http://github.com/python/cpython $dstdir
   fi
 fi
+# vim: set et nobomb ff=unix fenc=utf8:
