@@ -45,4 +45,21 @@ _hcommand_cmpl() {
 complete -F _hcommand_cmpl hclone
 complete -F _hcommand_cmpl hbuild
 
+hpytool() {
+  local pkgs
+  pkgs="nose six paramiko boto cython netcdf4 
+  ipython jupyter pythreejs 
+  sphinx sphinxcontrib-issuetracker"
+
+  if [ $(uname) == Darwin ] ; then
+    # homebrew place openssl in /usr/local/opt/openssl/
+    env \
+      CPATH=/usr/local/opt/openssl/include:$CPATH \
+      LIBRARY_PATH=/usr/local/opt/openssl/lib:$LIBRARY_PATH \
+      pip3 install -U "$pkgs"
+  elif [ $(uname) == Linux ] ; then
+    pip3 install -U "$pkgs"
+  fi
+}
+
 # vim: set et nu nobomb fenc=utf8 ft=sh ff=unix sw=2 ts=2:
