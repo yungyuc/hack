@@ -1,6 +1,11 @@
 #!/bin/bash
-if [ -f $YHROOT/etc/bashutils.sh ]; then source $YHROOT/etc/bashutils.sh; fi
-script=$YHROOT/clone.d/$1
+if [ -f $YHROOT/etc/buildutils.sh ]; then source $YHROOT/etc/buildutils.sh; fi
+
+script=$SCRIPTDIR/clone-$1.sh
+if [ ! -e $script ]; then
+  script=$SCRIPTDIR/clone.sh
+fi
+
 if [ -e $script ] ; then
   echo "execute cloning script \"$script\" ${@:2} ..."
   echo
@@ -8,6 +13,7 @@ if [ -e $script ] ; then
   echo
   echo "finished cloning script \"$script\"."
 else
-  echo "cloning script \"$script\" not found"
+  echo "neither clone-$1.sh nor clone.sh is found in $SCRIPTDIR/"
 fi
+
 # vim: set et nu nobomb fenc=utf8 ft=sh ff=unix sw=2 ts=2:

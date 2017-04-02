@@ -1,10 +1,10 @@
 # cloned source trees; the trailing slash is necessary otherwise the files of
 # the same names in *.d/ directories get ignored as well.
-cpython/
+python/
 numpy/
 pybind11/
 # installation
-opt
+usr
 # temporary directory
 downloaded
 src

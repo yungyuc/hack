@@ -1,24 +1,40 @@
 export YHROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 source $YHROOT/etc/bashutils.sh
 namemunge PATH $YHROOT/bin
-alias hackon='namemunge PATH $YHROOT/opt/bin'
-alias hackoff='nameremove PATH $YHROOT/opt/bin'
 
-# hclone completion.
-_hclone_cmpl() {
-  local hcloned cur prev opts
-  COMPREPLY=()
-  cur="${COMP_WORDS[COMP_CWORD]}"
-  prev="${COMP_WORDS[COMP_CWORD-1]}"
-  opts=`/bin/ls $YHROOT/clone.d`
-  COMPREPLY=( $(compgen -W "${opts}" -- ${cur}) )
-  return 0
+_hackon_impl() {
+  namemunge PATH $YHROOT/usr/$1/bin
+  if [ $(uname) == Darwin ] ; then
+    namemunge DYLD_LIBRARY_PATH $YHROOT/usr/$1/lib
+  elif [ $(uname) == Linux ] ; then
+    namemunge LD_LIBRARY_PATH $YHROOT/usr/$1/lib
+  fi
 }
-complete -F _hclone_cmpl hclone
 
-# hbuild completion.
-_hbuild_cmpl() {
-  local hbuildd cur prev opts
+_hackoff_impl() {
+  nameremove PATH $YHROOT/usr/$1/bin
+  if [ $(uname) == Darwin ] ; then
+    nameremove DYLD_LIBRARY_PATH $YHROOT/usr/$1/lib
+  elif [ $(uname) == Linux ] ; then
+    nameremove LD_LIBRARY_PATH $YHROOT/usr/$1/lib
+  fi
+}
+
+hackon() {
+  if [ -z "$1" ] ; then echo "usage: hackon [dbg|opt]" ; return ; fi
+  _hackon_impl common
+  _hackon_impl $1 # flavor
+}
+
+hackoff() {
+  if [ -z "$1" ] ; then echo "usage: hackoff [dbg|opt]" ; return ; fi
+  _hackoff_impl common
+  _hackoff_impl $1 # flavor
+}
+
+# completion for hclone and hbuild.
+_hcommand_cmpl() {
+  local hcloned cur prev opts
   COMPREPLY=()
   cur="${COMP_WORDS[COMP_CWORD]}"
   prev="${COMP_WORDS[COMP_CWORD-1]}"
@@ -26,6 +42,7 @@ _hbuild_cmpl() {
   COMPREPLY=( $(compgen -W "${opts}" -- ${cur}) )
   return 0
 }
-complete -F _hbuild_cmpl hbuild
+complete -F _hcommand_cmpl hclone
+complete -F _hcommand_cmpl hbuild
 
 # vim: set et nu nobomb fenc=utf8 ft=sh ff=unix sw=2 ts=2:

@@ -1,5 +1,5 @@
 #!/bin/bash
-if [ -f $YHROOT/etc/bashutils.sh ]; then source $YHROOT/etc/bashutils.sh; fi
+if [ -f $YHROOT/etc/buildutils.sh ]; then source $YHROOT/etc/buildutils.sh; fi
 
 showrealpath () {
  echo "$(cd "$(dirname $1)" && pwd)/$1"
@@ -33,19 +33,6 @@ YHDL="${YHDL:=$YHROOT/downloaded}"
 mkdir -p $YHDL
 export YHDL="$(cd $YHDL && pwd)"
 
-if [ $(uname) == Darwin ] ; then
-  NP=${NP:=$(sysctl -n hw.ncpu)}
-elif [ $(uname) == Linux ] ; then
-  NP=${NP:=$(cat /proc/cpuinfo | grep processor | wc -l)}
-else
-  NP=${NP:=1}
-fi
-export NP
-
-export SCRIPTDIR=$YHROOT/build.d/$1
-
-export INSTALLDIR=$YHROOT/opt
-
 script=$SCRIPTDIR/build-$1.sh
 if [ ! -e $script ]; then
   script=$SCRIPTDIR/build.sh
@@ -58,7 +45,7 @@ if [ -e $script ] ; then
   echo
   echo "finished building script \"$script\"."
 else
-  echo "either build-$1.sh or build.sh is found in $SCRIPTDIR/"
+  echo "neither build-$1.sh nor build.sh is found in $SCRIPTDIR/"
 fi
 
 # vim: set et nu nobomb fenc=utf8 ft=sh ff=unix sw=2 ts=2:

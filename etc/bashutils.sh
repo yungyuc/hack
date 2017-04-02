@@ -16,6 +16,7 @@ namemunge () {
   fi
   eval "export $1"
 }
+export -f namemunge
 
 fi # end namemunge
 
@@ -26,6 +27,7 @@ if [ -z "$(type -t nameremove)" ] ; then
 nameremove () {
   eval "export $1=$(echo -n ${!1} | awk -v RS=: -v ORS=: -v var="$2" '$0 != var' | sed 's/:*$//')"
 }
+export -f nameremove
 
 fi # end nameremove
 
@@ -35,6 +37,7 @@ if [ -z "$(type -t source_if)" ] ; then
 source_if () {
   test -f "$1" && source "$1"
 }
+export -f source_if
 
 fi # end source_if
 
