@@ -1,4 +1,34 @@
 #!/bin/bash
+
+usage () {
+  echo "usage: $(basename $0) [opt|dbg] script"
+}
+
+if [[ $# -eq 1 ]] ; then
+  scriptname=$1
+  export SCRIPTDIR=$YHROOT/build.d/$scriptname
+  export FLAVOR="${FLAVOR:=opt}"
+  echo "FLAVOR defaults to $FLAVOR"
+elif [[ $# -eq 2 ]] ; then
+  scriptname=$2
+  export SCRIPTDIR=$YHROOT/build.d/$scriptname
+  export FLAVOR="${FLAVOR:=$1}"
+  valids="opt dbg"
+  for valid in $valids ; do
+    if [ "$FLAVOR" == "$valid" ] ; then
+      unset valid ; break
+    fi
+  done
+  if [ -n "$valid" ] ; then
+    echo "FLAVOR set to $FLAVOR, not in \"$valids\""
+    usage ; exit
+  fi
+  unset valids
+else
+  echo "wrong arguments"
+  usage ; exit
+fi
+
 if [ -f $YHROOT/etc/buildutils.sh ]; then source $YHROOT/etc/buildutils.sh; fi
 
 showrealpath () {
@@ -33,19 +63,19 @@ YHDL="${YHDL:=$YHROOT/downloaded}"
 mkdir -p $YHDL
 export YHDL="$(cd $YHDL && pwd)"
 
-script=$SCRIPTDIR/build-$1.sh
+script=$SCRIPTDIR/build-$scriptname.sh
 if [ ! -e $script ]; then
   script=$SCRIPTDIR/build.sh
 fi
 
 if [ -e $script ] ; then
-  echo "execute building script \"$script\" ${@:2} ..."
+  echo "execute building script \"$script\" ${@:$(($#+1))} ..."
   echo
-  bash $script "${@:2}"
+  bash $script "${@:$(($#+1))}"
   echo
   echo "finished building script \"$script\"."
 else
-  echo "neither build-$1.sh nor build.sh is found in $SCRIPTDIR/"
+  echo "neither build-$scriptname.sh nor build.sh is found in $SCRIPTDIR/"
 fi
 
 # vim: set et nu nobomb fenc=utf8 ft=sh ff=unix sw=2 ts=2:

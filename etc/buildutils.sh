@@ -10,9 +10,9 @@ else
 fi
 export NP
 
-export SCRIPTDIR=$YHROOT/build.d/$1
+export SCRIPTDIR=${SCRIPTDIR:=$YHROOT/build.d/$1}
 
-FLAVOR="${FLAVOR:=unknown}"
+FLAVOR="${FLAVOR:=opt}"
 
 export INSTALLDIR=$YHROOT/usr/$FLAVOR
 mkdir -p $INSTALLDIR
