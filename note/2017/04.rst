@@ -1,0 +1,9 @@
+=============
+2017/04 Notes
+=============
+
+Allow ``hbuild`` to take command-line arguments for respecting
+"flavor".
+
+I DIDN't use the most popular `SO for bash command-line argument processing
+<http://stackoverflow.com/questions/192249/how-do-i-parse-command-line-arguments-in-bash>`__ :-)

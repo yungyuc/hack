@@ -21,13 +21,13 @@ _hackoff_impl() {
 }
 
 hackon() {
-  if [ -z "$1" ] ; then echo "usage: hackon [dbg|opt]" ; return ; fi
+  if [ -z "$1" ] ; then echo "usage: hackon [opt|dbg]" ; return ; fi
   _hackon_impl common
   _hackon_impl $1 # flavor
 }
 
 hackoff() {
-  if [ -z "$1" ] ; then echo "usage: hackoff [dbg|opt]" ; return ; fi
+  if [ -z "$1" ] ; then echo "usage: hackoff [opt|dbg]" ; return ; fi
   _hackoff_impl common
   _hackoff_impl $1 # flavor
 }
