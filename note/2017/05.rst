@@ -1,3 +1,5 @@
 A very simple CPython work flow: https://hackernoon.com/modifying-the-python-language-in-7-minutes-b94b0a99ce14
 
 XCode project pbxproj file format: http://www.monobjc.net/xcode-project-file-format.html
+
+More XCode notes: http://neurocline.github.io/dev/2016/03/13/xcode-notes.html
