@@ -3,3 +3,5 @@ A very simple CPython work flow: https://hackernoon.com/modifying-the-python-lan
 XCode project pbxproj file format: http://www.monobjc.net/xcode-project-file-format.html
 
 More XCode notes: http://neurocline.github.io/dev/2016/03/13/xcode-notes.html
+
+Debug external binary with Xcode: https://developer.mozilla.org/en-US/docs/Mozilla/Debugging/Debugging_on_Mac_OS_X
