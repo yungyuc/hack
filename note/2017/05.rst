@@ -5,3 +5,5 @@ XCode project pbxproj file format: http://www.monobjc.net/xcode-project-file-for
 More XCode notes: http://neurocline.github.io/dev/2016/03/13/xcode-notes.html
 
 Debug external binary with Xcode: https://developer.mozilla.org/en-US/docs/Mozilla/Debugging/Debugging_on_Mac_OS_X
+
+Xcode 4 Code Completion for External Build Projects http://hiltmon.com/blog/2013/07/07/xcode-4-code-completion-for-external-build-projects/
