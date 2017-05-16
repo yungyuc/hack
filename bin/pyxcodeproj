@@ -77,6 +77,39 @@ class File(FsItem):
                 self.uid, self.name, self.file_type, self.name))
 
 
+class TargetExec(FsItem):
+    def __init__(self, name):
+        super(TargetExec, self).__init__(name, name)
+
+    def __str__(self):
+        return (
+            "\t\t%s /* %s */ = {"
+            "isa = PBXFileReference; "
+            "explicitFileType = \"compiled.mach-o.executable\"; "
+            "includeInIndex = 0; "
+            "path = \"%s\"; "
+            "sourceTree = BUILT_PRODUCTS_DIR; };" % (
+                self.uid, self.name, self.name))
+
+
+class BuildFile(XcodeObject):
+    def __init__(self, file):
+        super(BuildFile, self).__init__()
+        self.file = file
+
+    @property
+    def name(self):
+        return self.file.name
+
+    def __str__(self):
+        return (
+            "\t\t%s /* %s */ = {"
+            "isa = PBXBuildFile; "
+            "fileRef = %s "
+            "/* %s */; };" % (
+                self.uid, self.name, self.file.uid, self.name))
+
+
 class Group(FsItem):
     def __init__(self, name, path, children=None):
         super(Group, self).__init__(name, path)
@@ -143,17 +176,30 @@ class Group(FsItem):
             files.extend(it for it in subfiles if isinstance(it, File))
         return files
 
+    def derive_build_files(self):
+        return [BuildFile(f) for f in
+                self.all_files() if f.name.endswith(".c")]
+
 
 class BuildConfig(XcodeObject):
-    def __init__(self, name):
+    def __init__(self, name, include_paths=None):
         super(BuildConfig, self).__init__()
         self.name = name
+        self.include_paths = include_paths if include_paths else []
 
     def __str__(self):
         lines = list()
         lines.append("\t\t%s /* %s */ = {" % (self.uid, self.name))
         lines.append("\t\t\tisa = XCBuildConfiguration;")
         lines.append("\t\t\tbuildSettings = {")
+
+        if self.include_paths:
+            lines.append("\t\t\t\tOTHER_CFLAGS = (")
+            for inc in self.include_paths:
+                lines.append("\t\t\t\t\t\"-I%s\"," % inc)
+            lines.append("\t\t\t\t);")
+            lines.append("\t\t\t\tPRODUCT_NAME = \"$(TARGET_NAME)\";")
+
         lines.append("\t\t\t};")
         lines.append("\t\t\tname = %s;" % self.name)
         lines.append("\t\t};")
@@ -161,22 +207,16 @@ class BuildConfig(XcodeObject):
 
 
 class ConfigList(XcodeObject):
-    def __init__(self, configs):
+    def __init__(self, configs, name):
         super(ConfigList, self).__init__()
         self.configs = configs if configs else list()
+        self.name = name
 
     def __str__(self):
         lines = list()
 
-        lines.append("/* Begin XCBuildConfiguration section */")
-        for config in self.configs:
-            lines.append(str(config))
-        lines.append("/* End XCBuildConfiguration section */")
-        lines.append("")
-
-        lines.append("/* Begin XCConfigurationList section */")
-        lines.append("\t\t%s /* Build configuration list for PBXProject */ = {"
-                     % self.uid)
+        lines.append("\t\t%s /* Build configuration list for %s */ = {"
+                     % (self.uid, self.name))
         lines.append("\t\t\tisa = XCConfigurationList;")
         lines.append("\t\t\tbuildConfigurations = (")
         for config in self.configs:
@@ -186,21 +226,89 @@ class ConfigList(XcodeObject):
         lines.append("\t\t\tdefaultConfigurationName = %s;" %
                      self.configs[-1].name)
         lines.append("\t\t};")
-        lines.append("/* End XCConfigurationList section */")
+
+        return "\n".join(lines)
+
+
+class SourcePhase(XcodeObject):
+    def __init__(self, build_files):
+        super(SourcePhase, self).__init__()
+        self.build_files = build_files
+
+    def __str__(self):
+        lines = list()
+
+        lines.append("/* Begin PBXSourcesBuildPhase section */")
+        lines.append("\t\t%s /* Sources */ = {" % self.uid)
+        lines.append("\t\t\tisa = PBXSourcesBuildPhase;")
+        lines.append("\t\t\tbuildActionMask = 2147483647;")
+        lines.append("\t\t\tfiles = (")
+        for bf in self.build_files:
+            lines.append("\t\t\t\t\t%s /* %s in Sources */," %
+                         (bf.uid, bf.name))
+        lines.append("\t\t\t);")
+        lines.append("\t\t\trunOnlyForDeploymentPostprocessing = 0;")
+        lines.append("\t\t};")
+        lines.append("/* End PBXSourcesBuildPhase section */")
+
+        return "\n".join(lines)
+
+
+class NativeTarget(XcodeObject):
+    def __init__(self, name, config_list, source_phase):
+        super(NativeTarget, self).__init__()
+        self.name = name
+        self.config_list = config_list
+        self.source_phase = source_phase
+        self.executable = TargetExec("python-index")
+
+    def __str__(self):
+        lines = list()
+
+        lines.append("/* Begin PBXNativeTarget section */")
+        lines.append("\t\t%s /* %s */ = {" % (self.uid, self.name))
+        lines.append("\t\t\tisa = PBXNativeTarget;")
+        lines.append(
+                "\t\t\tbuildConfigurationList = %s "
+                "/* Build configuration list for PBXNativeTarget \"%s\" */;" %
+                (self.config_list.uid, self.name))
+        lines.append("\t\t\tbuildPhases = (")
+        lines.append("\t\t\t\t%s /* Sources */," % self.source_phase.uid)
+        lines.append("\t\t\t);")
+        lines.append("\t\t\tbuildRules = (")
+        lines.append("\t\t\t);")
+        lines.append("\t\t\tdependencies = (")
+        lines.append("\t\t\t);")
+        lines.append("\t\t\tname = \"%s\";" % self.name)
+        lines.append("\t\t\tproductName = \"%s\";" % self.name)
+        lines.append("\t\t\tproductReference = %s /* %s */;" %
+                     (self.executable.uid, self.executable.name))
+        lines.append(
+                "\t\t\tproductType = \"com.apple.product-type.tool\";")
+        lines.append("\t\t};")
+        lines.append("/* End PBXNativeTarget section */")
 
         return "\n".join(lines)
 
 
 class PBXProject(XcodeObject):
-    def __init__(self, config_list, group):
+    def __init__(self, config_list, target, group):
         super(PBXProject, self).__init__()
         self.config_list = config_list
+        self.target = target
         self.group = group
 
     def __str__(self):
         lines = list()
 
+        lines.append("/* Begin PBXBuildFile section */")
+        for bfobj in self.target.source_phase.build_files:
+            lines.append(str(bfobj))
+        lines.append("/* End PBXBuildFile section */")
+        lines.append("")
+
         lines.append("/* Begin PBXFileReference section */")
+        lines.append(str(self.target.executable))
         for xfobj in self.group.all_files():
             lines.append(str(xfobj))
         lines.append("/* End PBXFileReference section */")
@@ -212,11 +320,20 @@ class PBXProject(XcodeObject):
         lines.append("/* End PBXGroup section */")
         lines.append("")
 
+        lines.append(str(self.target))
+        lines.append("")
+
         lines.append("/* Begin PBXProject section */")
         lines.append("\t\t%s /* Project object */ = {" % self.uid)
         lines.append("\t\t\tisa = PBXProject;")
         lines.append("\t\t\tattributes = {")
         lines.append("\t\t\t\tLastUpgradeCheck = 0830;")
+        lines.append("\t\t\t\tTargetAttributes = {")
+        lines.append("\t\t\t\t\t%s = {" % self.target.uid)
+        lines.append("\t\t\t\t\t\tCreatedOnToolsVersion = 8.3.2;")
+        lines.append("\t\t\t\t\t\tProvisioningStyle = Automatic;")
+        lines.append("\t\t\t\t\t};")
+        lines.append("\t\t\t\t};")
         lines.append("\t\t\t};")
         lines.append("\t\t\tbuildConfigurationList = %s "
                      "/* Build configuration list for PBXProject */;" %
@@ -231,12 +348,28 @@ class PBXProject(XcodeObject):
         lines.append("\t\t\tprojectDirPath = \"\";")
         lines.append("\t\t\tprojectRoot = \"\";")
         lines.append("\t\t\ttargets = (")
+        lines.append("\t\t\t\t%s /* %s */," %
+                     (self.target.uid, self.target.name))
         lines.append("\t\t\t);")
         lines.append("\t\t};")
         lines.append("/* End PBXProject section */")
         lines.append("")
 
+        lines.append(str(self.target.source_phase))
+        lines.append("")
+
+        lines.append("/* Begin XCBuildConfiguration section */")
+        for config in self.target.config_list.configs:
+            lines.append(str(config))
+        for config in self.config_list.configs:
+            lines.append(str(config))
+        lines.append("/* End XCBuildConfiguration section */")
+        lines.append("")
+
+        lines.append("/* Begin XCConfigurationList section */")
+        lines.append(str(self.target.config_list))
         lines.append(str(self.config_list))
+        lines.append("/* End XCConfigurationList section */")
 
         return "\n".join(lines)
 
@@ -280,18 +413,33 @@ def make_xcodeproj(pyroot, proj_loc, use_chroot=False):
             subchroot = subdir
         return Group.from_directory(subdir, chroot=subchroot, extensions=exts)
 
-    config_list = ConfigList([
-        BuildConfig("Debug"),
-        BuildConfig("Release"),
-    ])
     children = list()
     children.append(_make_group("Include", [".h"]))
     children.append(_make_group("Modules", [".h", ".c"]))
     children.append(_make_group("Objects", [".h", ".c"]))
-    children.append(_make_group("Python", [".h", ".c"]))
+    children.append(_make_group("Parser", [".h", ".c"]))
     children.append(_make_group("Programs", [".h", ".c"]))
+    children.append(_make_group("Python", [".h", ".c"]))
     group = Group(None, None, children)
-    proj = ProjFile(PBXProject(config_list, group))
+    build_files = group.derive_build_files()
+    source_phase = SourcePhase(build_files)
+
+    incpaths = [os.path.join(pyroot, t) for t in 
+                ("Include", "Modules", "Objects", "Parser", "Programs",
+                 "Python")]
+    target_config_list = ConfigList(
+        [BuildConfig("Debug", incpaths), BuildConfig("Release", incpaths)],
+        name="PBXNativeTarget \"python-index\"",
+    )
+    target = NativeTarget("python-index", target_config_list, source_phase)
+    group.children.append(target.executable)
+
+    project_config_list = ConfigList(
+        [BuildConfig("Debug"), BuildConfig("Release")],
+        name="PBXProject \"python\"",
+    )
+
+    proj = ProjFile(PBXProject(project_config_list, target, group))
 
     if not os.path.isdir(proj_loc):
         os.makedirs(proj_loc)
