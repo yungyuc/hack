@@ -126,7 +126,8 @@ class Group(FsItem):
             tail = root.split(os.sep)[-1]
             for dname in dnames:
                 parent = folders.setdefault(root, Group(tail, tail))
-                child = Group(dname, dname)
+                cpath = os.path.join(root, dname)
+                child = folders.setdefault(cpath, Group(dname, dname))
                 parent.children.append(child)
             for fname in fnames:
                 main, ext = os.path.splitext(fname)
