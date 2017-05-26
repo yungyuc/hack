@@ -21,7 +21,14 @@ _hackoff_impl() {
 }
 
 ho() {
-  if [ -z "$1" ] ; then echo "usage: hackon [opt|dbg]" ; return ; fi
+  if [ -z "$1" ] ; then
+    if echo "$PATH" | grep -q "$YHROOT/usr" ; then
+      echo "$(which python3)"
+    else
+      echo "not hacking"
+    fi
+    return
+  fi
   if [ -z "$2" ] && [ "$2" == "off" ] ; then
     _hackoff_impl common
     _hackoff_impl $1 # flavor
@@ -66,13 +73,13 @@ hpytool() {
   ipython jupyter pythreejs 
   sphinx sphinxcontrib-issuetracker"
 
-  if [ $(uname) == Darwin ] ; then
+  if [ "$(uname)" == "Darwin" ] ; then
     # homebrew place openssl in /usr/local/opt/openssl/
     env \
       CPATH=/usr/local/opt/openssl/include:$CPATH \
       LIBRARY_PATH=/usr/local/opt/openssl/lib:$LIBRARY_PATH \
       pip3 install -U "$pkgs"
-  elif [ $(uname) == Linux ] ; then
+  elif [ "$(uname)" == "Linux" ] ; then
     pip3 install -U "$pkgs"
   fi
 }
