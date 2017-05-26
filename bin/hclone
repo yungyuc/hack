@@ -1,4 +1,11 @@
 #!/bin/bash
+
+if [ "$1" == "-h" ] ; then
+  echo "usage: $(basename $0) package_name"
+  echo "  package_name must be in $YHROOT/build.d/"
+  exit
+fi
+
 if [ -f $YHROOT/etc/buildutils.sh ]; then source $YHROOT/etc/buildutils.sh; fi
 
 script=$SCRIPTDIR/clone-$1.sh
