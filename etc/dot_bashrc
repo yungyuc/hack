@@ -37,7 +37,7 @@ ho() {
 
 # completion for hclone and hbuild.
 _hcommand_cmpl() {
-  local hcloned cur prev opts
+  local cur prev opts
   COMPREPLY=()
   cur="${COMP_WORDS[COMP_CWORD]}"
   prev="${COMP_WORDS[COMP_CWORD-1]}"
@@ -47,6 +47,18 @@ _hcommand_cmpl() {
 }
 complete -F _hcommand_cmpl hclone
 complete -F _hcommand_cmpl hbuild
+
+# completion for ho
+_ho_cmpl() {
+  local cur prev opts
+  COMPREPLY=()
+  cur="${COMP_WORDS[COMP_CWORD]}"
+  prev="${COMP_WORDS[COMP_CWORD-1]}"
+  opts=`/bin/ls $YHROOT/usr`
+  COMPREPLY=( $(compgen -W "${opts}" -- ${cur}) )
+  return 0
+}
+complete -F _ho_cmpl ho
 
 hpytool() {
   local pkgs
