@@ -1,9 +1,11 @@
 # cloned source trees; the trailing slash is necessary otherwise the files of
 # the same names in *.d/ directories get ignored as well.
-python/
-*.xcodeproj/
-numpy/
 pybind11/
+python/
+numpy/
+solvcon/
+# IDE
+*.xcodeproj/
 # installation
 usr
 # temporary directory

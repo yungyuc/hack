@@ -65,4 +65,6 @@ hpytool() {
   fi
 }
 
+if [ -f $HOME/.yhack ]; then ho $(cat $HOME/.yhack); fi
+
 # vim: set et nu nobomb fenc=utf8 ft=sh ff=unix sw=2 ts=2:

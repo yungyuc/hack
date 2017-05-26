@@ -1,9 +1,9 @@
 #!/bin/bash
 if [ -f $YHROOT/etc/bashutils.sh ]; then source $YHROOT/etc/bashutils.sh; fi
 
-if [ $(uname) == Darwin ] ; then
+if [ "$(uname)" == "Darwin" ] ; then
   NP=${NP:=$(sysctl -n hw.ncpu)}
-elif [ $(uname) == Linux ] ; then
+elif [ "$(uname)" == "Linux" ] ; then
   NP=${NP:=$(cat /proc/cpuinfo | grep processor | wc -l)}
 else
   NP=${NP:=1}
@@ -11,6 +11,10 @@ fi
 export NP
 
 export SCRIPTDIR=${SCRIPTDIR:=$YHROOT/build.d/$1}
+if [ ! -d "$SCRIPTDIR" ]; then
+  echo "Script directory \"$SCRIPTDIR\" doesn't exist"
+  exit
+fi
 
 FLAVOR="${FLAVOR:=opt}"
 
