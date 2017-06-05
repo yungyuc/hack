@@ -1,0 +1,44 @@
+#!/bin/bash
+# Start a workspace for hacking SOLVCON
+
+osascript - << EOF
+-- References:
+-- * https://www.iterm2.com/documentation-scripting.html
+
+tell application "iTerm2"
+  -- Current terminal session
+  tell current session of current window
+    set name to "hack"
+    write text "ho dbg; cd \$YHROOT"
+  end tell
+  tell current window
+    -- python terminal
+    set mytab to (create tab with default profile)
+    tell first session of current tab
+      set name to "python"
+      write text "ho dbg; cd \$YHROOT/python"
+    end tell
+
+    -- pybind11 terminal
+    set mytab to (create tab with default profile)
+    tell first session of current tab
+      set name to "pybind11"
+      write text "ho dbg; cd \$YHROOT/pybind11"
+    end tell
+
+    -- solvcon terminal
+    set mytab to (create tab with default profile)
+    tell first session of current tab
+      set name to "sc"
+      write text "ho dbg; source \$YHROOT/solvcon/contrib/startdevsc; cd \$SCSRC"
+    end tell
+
+    -- sandbox terminal
+    set mytab to (create tab with default profile)
+    tell first session of current tab
+      set name to "sandbox"
+      write text "ho dbg; source \$YHROOT/solvcon/contrib/startdevsc; cd \$SCSRC/sandbox"
+    end tell
+  end tell
+end tell
+EOF
