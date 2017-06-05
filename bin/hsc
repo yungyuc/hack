@@ -33,11 +33,11 @@ tell application "iTerm2"
       write text "ho dbg; source \$YHROOT/solvcon/contrib/startdevsc; cd \$SCSRC"
     end tell
 
-    -- sandbox terminal
+    -- gasplus/obrf terminal
     set mytab to (create tab with default profile)
     tell first session of current tab
-      set name to "sandbox"
-      write text "ho dbg; source \$YHROOT/solvcon/contrib/startdevsc; cd \$SCSRC/sandbox"
+      set name to "gasplus/obrf"
+      write text "ho dbg; source \$YHROOT/solvcon/contrib/startdevsc; cd \$SCSRC/sandbox/gasplus/obrf"
     end tell
   end tell
 end tell
