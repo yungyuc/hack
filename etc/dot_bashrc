@@ -29,7 +29,7 @@ ho() {
     fi
     return
   fi
-  if [ -z "$2" ] && [ "$2" == "off" ] ; then
+  if [ -n "$2" ] && [ "$2" == "off" ] ; then
     _hackoff_impl common
     _hackoff_impl $1 # flavor
     return
