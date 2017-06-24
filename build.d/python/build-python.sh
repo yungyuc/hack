@@ -26,7 +26,7 @@ cfgcmd+=("--enable-ipv6")
 cfgcmd+=("--with-ensurepip=no")
 cfgcmd+=("--with-tcltk-includes=-I$PREFIX/include")
 cfgcmd+=("--with-tcltk-libs=\"-L$PREFIX/lib -ltcl8.5 -ltk8.5\"")
-cfgcmd+=("--enable-loadable-sqlite-extensions")
+#cfgcmd+=("--enable-loadable-sqlite-extensions")
 if [ "$FLAVOR" == "dbg" ] ; then
   cfgcmd+=("--with-pydebug")
 fi
