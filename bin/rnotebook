@@ -1,0 +1,60 @@
+#!/bin/bash
+# -*- coding: utf-8 -*-
+# vim: set ft=python:
+"/Users/yungyuc/hack/usr/dbg/bin/python3" "${BASH_SOURCE[0]}" "${@}"
+"exit"
+
+import sys
+import os
+import errno
+import re
+import argparse
+
+from ipykernel.kernelapp import IPKernelApp
+from ipykernel.ipkernel import IPythonKernel
+
+from notebook import notebookapp
+
+
+class MyPythonKernel(IPythonKernel):
+    implementation = 'MyPython'
+    implementation_version = '1.0'
+    banner = "My Python"
+
+
+def run_kernel():
+    sys.argv = [v for v in sys.argv if v not in ["--run-kernel"]]
+    IPKernelApp.launch_instance(kernel_class=MyPythonKernel)
+
+def run_notebook():
+    jconfig = os.path.abspath('.jnbconfig')
+
+    kpath = os.path.join(jconfig, 'kernels/mypython')
+    try:
+        os.makedirs(kpath)
+    except OSError as exc:
+        if exc.errno == errno.EEXIST and os.path.isdir(kpath):
+            pass
+        else:
+            raise
+
+    jpath = [jconfig]
+    if os.environ.get('JUPYTER_PATH', ''):
+        jpath.append(os.environ['JUPYTER_PATH'])
+    os.environ['JUPYTER_PATH'] = ':'.join(jpath)
+
+    kfn = os.path.join(jconfig, 'kernels/mypython/kernel.json')
+    with open(kfn, 'w') as fobj:
+        fobj.write("""{
+    "argv": ["%s", "--run-kernel", "-f", "{connection_file}"],
+    "display_name": "mypython"
+}""" % __file__)
+
+    sys.argv[0] = re.sub(r'(-script\.pyw?|\.exe)?$', '', sys.argv[0])
+    sys.exit(notebookapp.main())
+
+if __name__ == '__main__':
+    if "--run-kernel" in sys.argv:
+        run_kernel()
+    else:
+        run_notebook()
