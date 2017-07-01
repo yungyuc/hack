@@ -4,6 +4,8 @@
 "/Users/yungyuc/hack/usr/dbg/bin/python3" "${BASH_SOURCE[0]}" "${@}"
 "exit"
 
+# https://rosettacode.org/wiki/Multiline_shebang <- neat ;)
+
 import sys
 import os
 import errno
