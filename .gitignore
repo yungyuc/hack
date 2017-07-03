@@ -6,6 +6,7 @@ numpy/
 solvcon/
 # IDE
 *.xcodeproj/
+.ipynb_checkpoints/
 # installation
 usr
 # temporary directory
