@@ -1,9 +1,10 @@
 # cloned source trees; the trailing slash is necessary otherwise the files of
 # the same names in *.d/ directories get ignored as well.
-pybind11/
-python/
-numpy/
-solvcon/
+/pybind11
+/python
+/numpy
+/solvcon
+/modmagic
 # IDE
 *.xcodeproj/
 .ipynb_checkpoints/
