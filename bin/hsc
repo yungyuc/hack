@@ -16,7 +16,7 @@ tell application "iTerm2"
     set mytab to (create tab with default profile)
     tell first session of current tab
       set name to "jupyter"
-      write text "ho dbg"
+      write text "ho dbg; cd \$YHROOT/tmp"
     end tell
 
     -- solvcon terminal
