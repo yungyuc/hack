@@ -29,6 +29,10 @@ ho() {
     fi
     return
   fi
+  if [ "$1" == "-h" ] ; then
+    echo "available environment:" `/bin/ls $YHROOT/usr`
+    return
+  fi
   if [ -n "$2" ] && [ "$2" == "off" ] ; then
     _hackoff_impl common
     _hackoff_impl $1 # flavor
@@ -86,4 +90,4 @@ hpytool() {
 
 if [ -f $HOME/.yhack ]; then ho $(cat $HOME/.yhack); fi
 
-# vim: set et nu nobomb fenc=utf8 ft=sh ff=unix sw=2 ts=2:
+# vim: set et nobomb fenc=utf8 ft=sh ff=unix sw=2 ts=2:
