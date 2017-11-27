@@ -3,7 +3,7 @@
 ## Euler Equations
 
 - `march::gas` needs a lot of refactoring.
-- [#125](https://github.com/solvcon/solvcon/issues/125) Develop noslip wall boundary condition treatment for parcel/gas
+- [#125](https://github.com/solvcon/solvcon/issues/125) Develop noslip wall boundary condition treatment for parcel/gasplus
 - [#108](https://github.com/solvcon/solvcon/issues/108) Add verification in examples/gas/run_gas_obrf.sh
 
 ### One-Dimensional Shock-Tube Problem Setup
@@ -47,7 +47,7 @@
 
 * Interactive computing / Jupyter integration
 * GCE deployment and development environment
-* (valid?) [#147]([build gmsh-compatible glibc](https://github.com/solvcon/solvcon/issues/147)) build gmsh-compatible glibc
+* (valid?) [#147](https://github.com/solvcon/solvcon/issues/147) build gmsh-compatible glibc
 * (valid?) [#146](https://github.com/solvcon/solvcon/issues/146) Different running modes result into different numbers of unit tests
 * (valid?) [#145](https://github.com/solvcon/solvcon/issues/145) system-wide installation did not deploy external build extensions correctly
 * Debian/Ubuntu
