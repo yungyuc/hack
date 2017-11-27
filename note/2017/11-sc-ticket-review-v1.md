@@ -58,11 +58,10 @@
   * [#131](https://github.com/solvcon/solvcon/issues/131) Need to update repository location in cloud.py
   * [#97](https://github.com/solvcon/solvcon/issues/97) Extract the information about operating systems outside AwsOperator for better testing
   * [#96](https://github.com/solvcon/solvcon/issues/96) Allow AwsOperator to execute commands in batch mode
-
-- Restart
-  - [#80](https://github.com/solvcon/solvcon/issues/80) Restart wont't work on large meshes
-  - [#70](https://github.com/solvcon/solvcon/issues/70) Change values at restart
-  - [#37](https://github.com/solvcon/solvcon/issues/37) Consolidate restart
+* Restart
+  * [#80](https://github.com/solvcon/solvcon/issues/80) Restart wont't work on large meshes
+  * [#70](https://github.com/solvcon/solvcon/issues/70) Change values at restart
+  * [#37](https://github.com/solvcon/solvcon/issues/37) Consolidate restart
 
 # Documentation
 
