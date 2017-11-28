@@ -1,3 +1,18 @@
+# Collaboration
+
+* Available platforms for collaboration:
+  * [Github](https://github.com/solvcon/): main repository
+  * [Travis-CI](https://travis-ci.org/solvcon/solvcon): free, public, but slow test runner
+  * [Slack](https://solvcon.slack.com/): professional team collaboration system
+  * [Gitter](https://gitter.im/solvcon/): public, free-to-join support channels
+  * [Gitlab](https://gitlab.com/solvcon/): I am still experimenting it.  Its container-enabled CI looks promising.
+  * A private [telegram](https://telegram.org/) chat group (ask @yungyuc or @tai271828 to access it)
+  * (old) [Hipchat](https://solvcon.hipchat.com/): another profession team collaboration system.  I haven't touched it for a while.
+* Publicity
+  * https://twitter.com/solvcon (but not active at all :-)
+* Options result in confusion, but sometimes power.  What are the best tools for the tiny team to use?  The key and only objective is efficiency for coding, running calculations, problem solving, and publishing.
+  * In short, how to write code better and faster.
+
 # Physics
 
 ## Euler Equations
@@ -24,6 +39,7 @@
 ## Navier-Stokes Equations
 
 - [#15](https://github.com/solvcon/solvcon/issues/15) Implement Navier-Stokes solver
+  - Do it with `solvcon.parcel.gasplus` (C++11-based CESE implementation)
 
 ## Other Physics
 
