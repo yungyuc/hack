@@ -1,8 +1,10 @@
-# cloned source trees; the trailing slash is necessary otherwise the files of
+# cloned source trees; the leading slash is necessary otherwise the files of
 # the same names in *.d/ directories get ignored as well.
 /pybind11
 /python
+/python2
 /numpy
+/seminar
 /solvcon
 /modmagic
 # IDE
