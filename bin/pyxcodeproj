@@ -455,7 +455,8 @@ def make_xcodeproj(pyroot, proj_loc, use_chroot=False):
 def main():
     YHROOT = os.path.split(__file__)[0]
     YHROOT = os.environ.get("YHROOT", YHROOT)
-    parser = argparse.ArgumentParser(description='Process some integers.')
+    parser = argparse.ArgumentParser(
+            description='Build Xcode project')
     parser.add_argument("-p", "--py", type=str, dest="pyroot",
                         default=os.path.join(YHROOT, "python"),
                         help="Python source tree.")
