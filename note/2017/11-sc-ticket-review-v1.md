@@ -61,6 +61,7 @@
 
 # Infrastructure and Build
 
+* Normalize code style.
 * Interactive computing / Jupyter integration
 * GCE deployment and development environment
 * (valid?) [#147](https://github.com/solvcon/solvcon/issues/147) build gmsh-compatible glibc
