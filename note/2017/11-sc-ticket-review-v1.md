@@ -63,10 +63,7 @@
 
 * Normalize code style.
 * Interactive computing / Jupyter integration
-* GCE deployment and development environment
-* (valid?) [#147](https://github.com/solvcon/solvcon/issues/147) build gmsh-compatible glibc
-* (valid?) [#146](https://github.com/solvcon/solvcon/issues/146) Different running modes result into different numbers of unit tests
-* (valid?) [#145](https://github.com/solvcon/solvcon/issues/145) system-wide installation did not deploy external build extensions correctly
+* GCE/GKE deployment and development environment
 * Debian/Ubuntu
   * Include deb building in travis-ci
   * [#132](https://github.com/solvcon/solvcon/issues/132) Debian files should update to use github
