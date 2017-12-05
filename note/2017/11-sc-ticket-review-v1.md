@@ -64,14 +64,8 @@
 * Normalize code style.
 * Interactive computing / Jupyter integration
 * GCE/GKE deployment and development environment
-* Debian/Ubuntu
-  * Include deb building in travis-ci
-  * [#132](https://github.com/solvcon/solvcon/issues/132) Debian files should update to use github
-  * [#119](https://github.com/solvcon/solvcon/issues/119) setup SOLVCON project and prepare the PPA for the debian packages.
 * AWS (not active; maybe I should drop its support)
-  * [#131](https://github.com/solvcon/solvcon/issues/131) Need to update repository location in cloud.py
-  * [#97](https://github.com/solvcon/solvcon/issues/97) Extract the information about operating systems outside AwsOperator for better testing
-  * [#96](https://github.com/solvcon/solvcon/issues/96) Allow AwsOperator to execute commands in batch mode
+  * [#131](https://github.com/solvcon/solvcon/issues/131) solvcon.cloud is seriously outdated
 * Restart
   * [#80](https://github.com/solvcon/solvcon/issues/80) Restart wont't work on large meshes
   * [#70](https://github.com/solvcon/solvcon/issues/70) Change values at restart
