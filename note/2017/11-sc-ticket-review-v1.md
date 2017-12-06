@@ -2,6 +2,7 @@
 
 * Available platforms for collaboration:
   * [Github](https://github.com/solvcon/): main repository
+  * [Mailing list](mailto:solvcon@groups.google.com) (actually a [google group](https://groups.google.com/forum/#!forum/solvcon)): general discussion; not necessarily development
   * [Travis-CI](https://travis-ci.org/solvcon/solvcon): free, public, but slow test runner
   * [Slack](https://solvcon.slack.com/): professional team collaboration system
   * [Gitter](https://gitter.im/solvcon/): public, free-to-join support channels
@@ -61,11 +62,11 @@
 
 # Infrastructure and Build
 
+* [#131](https://github.com/solvcon/solvcon/issues/131) solvcon.cloud is seriously outdated
+  * GCE/GKE deployment and development environment
+  * AWS support should be dropped for now
 * Normalize code style.
 * Interactive computing / Jupyter integration
-* GCE/GKE deployment and development environment
-* AWS (not active; maybe I should drop its support)
-  * [#131](https://github.com/solvcon/solvcon/issues/131) solvcon.cloud is seriously outdated
 * Restart
   * [#80](https://github.com/solvcon/solvcon/issues/80) Restart wont't work on large meshes
   * [#70](https://github.com/solvcon/solvcon/issues/70) Change values at restart
