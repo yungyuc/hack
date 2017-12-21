@@ -4,11 +4,22 @@
 
 PYTHON=$INSTALLDIR/bin/python3
 
+mkdir -p build
+cd build
+
 # build.
+echo "build:"
+{ time \
+  cmake \
+    -DPYTHON_EXECUTABLE:FILEPATH=${PYTHON} \
+    -DCMAKE_INSTALL_PREFIX=${INSTALLDIR} \
+    ..
+} > install.log 2>&1
+echo "built: $(showrealpath build.log)"
+
 echo "start installation:"
 { time \
-  $PYTHON setup.py install --old-and-unmanageable ; \
-  $PYTHON setup.py install_headers ; \
+  make install
 } > install.log 2>&1
 echo "installation done: $(showrealpath install.log)"
 
