@@ -123,8 +123,12 @@ class Group(FsItem):
             chroot = directory
         folders = {directory: Group(directory.split(os.sep)[-1], chroot)}
         for root, dnames, fnames in os.walk(directory):
+            if '.git' in root:
+                continue
             tail = root.split(os.sep)[-1]
             for dname in dnames:
+                if '.git' in dname:
+                    continue
                 parent = folders.setdefault(root, Group(tail, tail))
                 cpath = os.path.join(root, dname)
                 child = folders.setdefault(cpath, Group(dname, dname))
@@ -397,7 +401,7 @@ class ProjFile(object):
         return "\n".join(lines)
 
 
-def make_xcodeproj(pyroot, proj_loc, use_chroot=False):
+def make_xcodeproj(pyroot, proj_loc, usrroot, use_chroot=False):
     if not proj_loc.endswith(".xcodeproj"):
         proj_loc += ".xcodeproj"
     chroot = pyroot
@@ -406,6 +410,10 @@ def make_xcodeproj(pyroot, proj_loc, use_chroot=False):
         chroot = os.path.join(*[".."]*depth)
         chroot = os.path.join(chroot, pyroot)
     pyroot = os.path.abspath(pyroot)
+    if usrroot is not None:
+        usrinc = os.path.abspath(os.path.join(usrroot, 'include'))
+    else:
+        usrinc = ""
 
     def _make_group(subdir, exts):
         subchroot = os.path.join(chroot, subdir)
@@ -415,6 +423,9 @@ def make_xcodeproj(pyroot, proj_loc, use_chroot=False):
         return Group.from_directory(subdir, chroot=subchroot, extensions=exts)
 
     children = list()
+    if usrinc:
+        children.append(Group.from_directory(
+            usrinc, chroot=usrinc, extensions=[".h"]))
     children.append(_make_group("Include", [".h"]))
     children.append(_make_group("Modules", [".h", ".c"]))
     children.append(_make_group("Objects", [".h", ".c"]))
@@ -425,9 +436,12 @@ def make_xcodeproj(pyroot, proj_loc, use_chroot=False):
     build_files = group.derive_build_files()
     source_phase = SourcePhase(build_files)
 
-    incpaths = [os.path.join(pyroot, t) for t in 
-                ("Include", "Modules", "Objects", "Parser", "Programs",
-                 "Python")]
+    incpaths = list()
+    if usrinc:
+        incpaths.append(usrinc)
+    incpaths.extend([
+        os.path.join(pyroot, t) for t in 
+        ("Include", "Modules", "Objects", "Parser", "Programs", "Python")])
     target_config_list = ConfigList(
         [BuildConfig("Debug", incpaths), BuildConfig("Release", incpaths)],
         name="PBXNativeTarget \"python-index\"",
@@ -460,6 +474,9 @@ def main():
     parser.add_argument("-p", "--py", type=str, dest="pyroot",
                         default=os.path.join(YHROOT, "python"),
                         help="Python source tree.")
+    parser.add_argument("-u", "--usr", type=str, dest="usrroot",
+                        default=None,
+                        help="Runtime tree.")
     parser.add_argument("-j", "--project", type=str, dest="proj_loc",
                         default=os.path.join(YHROOT, "python.xcodeproj"),
                         help="Xcode project directory.")
@@ -468,7 +485,7 @@ def main():
     FORMAT = "%(levelname)s: %(filename)s:%(funcName)s() %(message)s"
     logging.basicConfig(format=FORMAT, level=logging.INFO)
 
-    make_xcodeproj(args.pyroot, args.proj_loc)
+    make_xcodeproj(args.pyroot, args.proj_loc, args.usrroot)
 
 
 if __name__ == "__main__":
