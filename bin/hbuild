@@ -13,17 +13,6 @@ elif [[ $# -eq 2 ]] ; then
   scriptname=$2
   export SCRIPTDIR=$YHROOT/build.d/$scriptname
   export FLAVOR="${FLAVOR:=$1}"
-  valids="opt dbg"
-  for valid in $valids ; do
-    if [ "$FLAVOR" == "$valid" ] ; then
-      unset valid ; break
-    fi
-  done
-  if [ -n "$valid" ] ; then
-    echo "FLAVOR set to $FLAVOR, not in \"$valids\""
-    usage ; exit
-  fi
-  unset valids
 else
   echo "wrong arguments"
   usage ; exit
