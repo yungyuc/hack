@@ -25,12 +25,21 @@ ho() {
     if echo "$PATH" | grep -q "$YHROOT/usr" ; then
       echo "$(which python3)"
     else
-      echo "not hacking"
+      echo "not hacking; available environment:" `/bin/ls $YHROOT/usr`
     fi
     return
   fi
   if [ "$1" == "-h" ] ; then
     echo "available environment:" `/bin/ls $YHROOT/usr`
+    return
+  elif [ "$1" == "off" ] ; then
+    if [ -z "$(which python3)" ] ; then
+      echo "no python3 found in path"
+      return
+    fi
+    echo "$(cd "$(dirname "$(which python3)")/.." && pwd) to be turned off"
+    _hackoff_impl common
+    _hackoff_impl $(basename $(cd "$(dirname "$(which python3)")/.." && pwd))
     return
   fi
   if [ -n "$2" ] && [ "$2" == "off" ] ; then

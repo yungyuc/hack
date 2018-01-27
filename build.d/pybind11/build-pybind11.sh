@@ -4,8 +4,14 @@
 
 PYTHON=$INSTALLDIR/bin/python3
 
-mkdir -p build
-cd build
+if [ -z "$FLAVOR" ] ; then
+  echo "no hacking environment is set"
+  exit 0
+else
+  rm -rf build/hbuild_$FLAVOR
+  mkdir -p build/hbuild_$FLAVOR
+  cd build/hbuild_$FLAVOR
+fi
 
 # build.
 echo "build:"
@@ -13,8 +19,8 @@ echo "build:"
   cmake \
     -DPYTHON_EXECUTABLE:FILEPATH=${PYTHON} \
     -DCMAKE_INSTALL_PREFIX=${INSTALLDIR} \
-    ..
-} > install.log 2>&1
+    ../..
+} > build.log 2>&1
 echo "built: $(showrealpath build.log)"
 
 echo "start installation:"
