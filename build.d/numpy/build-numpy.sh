@@ -15,8 +15,8 @@ EOF
 elif [ $(uname) == Linux ] ; then
 cat > site.cfg << EOF
 [atlas]
-library_dirs = /usr/lib:/usr/local/lib:$INSTALLDIR/lib
-include_dirs = /usr/lib:/usr/local/include:$INSTALLDIR/include:$INSTALLDIR/include/atlas
+library_dirs = $INSTALLDIR/lib:/usr/lib:/usr/local/lib
+include_dirs = $INSTALLDIR/include:$INSTALLDIR/include/atlas:/usr/lib:/usr/local/include
 atlas_libs = lapack, f77blas, cblas, atlas
 EOF
 fi

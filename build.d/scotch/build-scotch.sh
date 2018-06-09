@@ -29,9 +29,11 @@ if [ $(uname) == Darwin ]; then
   cat $SCRIPTDIR/scotch_Makefile_darwin.inc >> Makefile.inc
 elif [ $(uname) == Linux ]; then
   cat Make.inc/Makefile.inc.x86-64_pc_linux2 | \
-    sed -e "s/= -O3/= -fPIC -O3/" >> \
+    sed -e "s&= -O3&= -fPIC -O3 -I$INSTALLDIR/include&" | \
+    sed -e "s&= -lz&= -L$INSTALLDIR/lib -lz&" >> \
     Makefile.inc
 fi
+export LDFLAGS="-L$INSTALLDIR/lib $LDFLAGS"
 { time make -j $NP ; } > make.log 2>&1
 cd ..
 

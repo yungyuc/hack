@@ -16,21 +16,30 @@ cd $YHROOT/src
 tar xf $pkgloc
 cd $pkgfull
 
-if [ -n "$(which lsb_release)" ] && [ $(lsb_release -i -s) == Ubuntu ] ; then
+if [ $(uname) == Linux ] ; then
 cat > patch << EOF
---- CMakeLists.txt  2017-02-11 18:49:01.240546180 +0800
-+++ CMakeLists.txt  2017-02-11 20:36:09.556438230 +0800
+--- CMakeLists.txt      2018-06-09 22:20:55.284460692 +0800
++++ CMakeLists.txt      2018-06-09 22:20:50.698613586 +0800
 @@ -346,6 +346,10 @@
          if(LAPACK_LIBRARIES)
            set_config_option(HAVE_BLAS "Blas(ATLAS)")
            set_config_option(HAVE_LAPACK "Lapack(ATLAS)")
 +          find_library(GFORTRAN_LIB libgfortran.so.3)
 +          if(GFORTRAN_LIB)
-+            list(APPEND LAPACK_LIBRARIES \${GFORTRAN_LIB})
++            list(APPEND LAPACK_LIBRARIES ${GFORTRAN_LIB})
 +          endif(GFORTRAN_LIB)
          else(LAPACK_LIBRARIES)
            # try with generic names
            set(GENERIC_LIBS_REQUIRED lapack blas pthread)
+@@ -353,7 +357,7 @@
+           if(LAPACK_LIBRARIES)
+             set_config_option(HAVE_BLAS "Blas(Generic)")
+             set_config_option(HAVE_LAPACK "Lapack(Generic)")
+-            find_library(GFORTRAN_LIB gfortran)
++            find_library(GFORTRAN_LIB libgfortran.so.3)
+             if(GFORTRAN_LIB)
+               list(APPEND LAPACK_LIBRARIES ${GFORTRAN_LIB})
+             endif(GFORTRAN_LIB)
 EOF
 patch -p0 < patch
 fi
