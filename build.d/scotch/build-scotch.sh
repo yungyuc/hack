@@ -4,15 +4,15 @@
 
 # download scotch
 pkgname=scotch
-pkgver=6.0.4
+pkgver=${VERSION:-6.0.4}
 pkgfull=${pkgname}_${pkgver}
 pkgloc=$YHDL/$pkgfull.tar.gz
 pkgurl=http://gforge.inria.fr/frs/download.php/file/34618/$pkgfull.tar.gz
 download $pkgloc $pkgurl d58b825eb95e1db77efe8c6ff42d329f
 
 # unpack.
-mkdir -p $YHROOT/src
-cd $YHROOT/src
+mkdir -p $YHROOT/src/$FLAVOR
+cd $YHROOT/src/$FLAVOR
 tar xf $pkgloc
 cd $pkgfull
 cd src # this is the working directory.

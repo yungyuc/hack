@@ -4,15 +4,15 @@
 
 # download netcdf.
 pkgname=netcdf
-pkgver=4.4.1.1
+pkgver=${VERSION:-4.4.1.1}
 pkgfull=$pkgname-$pkgver
 pkgloc=$YHDL/$pkgfull.tar.xz
 pkgurl=ftp://ftp.unidata.ucar.edu/pub/$pkgname/$pkgfull.tar.gz
 download $pkgloc $pkgurl 503a2d6b6035d116ed53b1d80c811bda
 
 # unpack.
-mkdir -p $YHROOT/src
-cd $YHROOT/src
+mkdir -p $YHROOT/src/$FLAVOR
+cd $YHROOT/src/$FLAVOR
 tar xf $pkgloc
 cd $pkgfull
 

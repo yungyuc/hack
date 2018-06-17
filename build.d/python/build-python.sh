@@ -4,6 +4,20 @@
 #
 # Python development guide: https://docs.python.org/devguide/
 
+pkgname=python
+pkgbranch=${VERSION:-3.6}
+pkgfull=$pkgname-$pkgbranch
+pkgrepo=http://github.com/python/cpython
+
+# unpack (clone)
+mkdir -p $YHROOT/src/$FLAVOR
+cd $YHROOT/src/$FLAVOR
+if [ ! -d $pkgrepo ] ; then
+  git clone -b $pkgbranch $pkgrepo $pkgfull
+fi
+cd $pkgfull
+
+# build
 PREFIX=$INSTALLDIR
 ARCH=64
 

@@ -4,15 +4,15 @@
 
 # download hdf5.
 pkgname=hdf5
-pkgver=1.8.18
+pkgver=${VERSION:-1.8.18}
 pkgfull=$pkgname-$pkgver
 pkgloc=$YHDL/$pkgfull.tar.bz2
 pkgurl=https://support.hdfgroup.org/ftp/HDF5/releases/hdf5-1.8/$pkgfull/src/$pkgfull.tar.bz2
 download $pkgloc $pkgurl 29117bf488887f89888f9304c8ebea0b
 
 # unpack.
-mkdir -p $YHROOT/src
-cd $YHROOT/src
+mkdir -p $YHROOT/src/$FLAVOR
+cd $YHROOT/src/$FLAVOR
 tar xf $pkgloc
 cd $pkgfull
 

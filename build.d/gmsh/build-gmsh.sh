@@ -4,15 +4,15 @@
 
 # download gmsh.
 pkgname=gmsh
-pkgver=2.16.0
+pkgver=${VERSION:-2.16.0}
 pkgfull=${pkgname}-${pkgver}-source
 pkgloc=$YHDL/$pkgfull.tgz
 pkgurl=http://gmsh.info/src/$pkgfull.tgz
 download $pkgloc $pkgurl 762c10f159dab4b042e3140b1c348427
 
 # unpack and patch.
-mkdir -p $YHROOT/src
-cd $YHROOT/src
+mkdir -p $YHROOT/src/$FLAVOR
+cd $YHROOT/src/$FLAVOR
 tar xf $pkgloc
 cd $pkgfull
 

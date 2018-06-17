@@ -4,15 +4,15 @@
 
 # download lapack.
 lapackname=lapack
-lapackver=3.7.0
+lapackver=${VERSION:-3.7.0}
 lapackfull=$lapackname-$lapackver
 lapackloc=$YHDL/$lapackfull.tgz
 lapackurl=http://www.netlib.org/$lapackname/$lapackname-$lapackver.tgz
 download $lapackloc $lapackurl 697bb8d67c7d336a0f339cc9dd0fa72f
 
 # unpack.
-mkdir -p $YHROOT/src
-cd $YHROOT/src
+mkdir -p $YHROOT/src/$FLAVOR
+cd $YHROOT/src/$FLAVOR
 rm -rf $lapackfull
 tar xf $lapackloc
 mkdir -p $lapackfull/build

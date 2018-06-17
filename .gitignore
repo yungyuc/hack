@@ -1,9 +1,6 @@
 # cloned source trees; the leading slash is necessary otherwise the files of
 # the same names in *.d/ directories get ignored as well.
-/seminar
-/solvcon
-/modmagic
-/r_*/
+/code
 # IDE
 *.xcodeproj/
 .ipynb_checkpoints/

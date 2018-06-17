@@ -2,13 +2,13 @@
 #
 # Copyright (C) 2011 Yung-Yu Chen <yyc@solvcon.net>.
 
-# download netcdf.
-pkgname=zlib
-pkgver=${VERSION:-1.2.11}
+# download git.
+pkgname=git
+pkgver=${VERSION:-2.17.1}
 pkgfull=$pkgname-$pkgver
 pkgloc=$YHDL/$pkgfull.tar.xz
-pkgurl=https://zlib.net/$pkgfull.tar.gz
-download $pkgloc $pkgurl 1c9f62f0778697a09d36121ead88e08e
+pkgurl=https://github.com/git/git/archive/v$pkgver.tar.gz
+download $pkgloc $pkgurl 3f923154ed47128f13b08eacd207d9ee
 
 # unpack.
 mkdir -p $YHROOT/src/$FLAVOR
@@ -17,10 +17,8 @@ tar xf $pkgloc
 cd $pkgfull
 
 # build.
-{ time ./configure \
-  --prefix=$INSTALLDIR \
-; } > configure.log 2>&1
-#  --with-hdf5=$INSTALLDIR \
+make configure
+{ time ./configure --prefix=$INSTALLDIR ; } > configure.log 2>&1
 { time make -j $NP ; } > make.log 2>&1
 { time make install ; } > install.log 2>&1
 

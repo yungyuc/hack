@@ -5,15 +5,15 @@
 # download cmake.
 pkgname=cmake
 pkgverprefix=3.11
-pkgver=$pkgverprefix.3
+pkgver=${VERSION:-3.11.3}
 pkgfull=$pkgname-$pkgver
 pkgloc=$YHDL/$pkgfull.tar.xz
 pkgurl=https://cmake.org/files/v$pkgverprefix/$pkgfull.tar.gz
 download $pkgloc $pkgurl 3f923154ed47128f13b08eacd207d9ee
 
 # unpack.
-mkdir -p $YHROOT/src
-cd $YHROOT/src
+mkdir -p $YHROOT/src/$FLAVOR
+cd $YHROOT/src/$FLAVOR
 tar xf $pkgloc
 cd $pkgfull
 

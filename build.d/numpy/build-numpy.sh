@@ -2,9 +2,21 @@
 #
 # Copyright (C) 2011 Yung-Yu Chen <yyc@solvcon.net>.
 
-PYTHON=$INSTALLDIR/bin/python3
+pkgname=numpy
+pkgbranch=${VERSION:-master}
+pkgfull=$pkgname-$pkgbranch
+pkgrepo=https://github.com/numpy/numpy
+
+# unpack (clone)
+mkdir -p $YHROOT/src/$FLAVOR
+cd $YHROOT/src/$FLAVOR
+if [ ! -d $pkgrepo ] ; then
+  git clone -b $pkgbranch $pkgrepo $pkgfull
+fi
+cd $pkgfull
 
 # build.
+PYTHON=$INSTALLDIR/bin/python3
 rm -f site.cfg
 if [ $(uname) == Darwin ] ; then
 cat > site.cfg << EOF
