@@ -11,7 +11,7 @@ pkgrepo=http://github.com/pybind/pybind11.git
 mkdir -p $YHROOT/src/$FLAVOR
 cd $YHROOT/src/$FLAVOR
 if [ ! -d $pkgrepo ] ; then
-  git clone -b $pkgbranch $pkgrepo $pkgfull
+  git clone -q -b $pkgbranch $pkgrepo $pkgfull
 fi
 cd $pkgfull
 
