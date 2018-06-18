@@ -7,7 +7,7 @@ pkgname=cmake
 pkgverprefix=3.11
 pkgver=${VERSION:-3.11.3}
 pkgfull=$pkgname-$pkgver
-pkgloc=$YHDL/$pkgfull.tar.xz
+pkgloc=$YHDL/$pkgfull.tar.gz
 pkgurl=https://cmake.org/files/v$pkgverprefix/$pkgfull.tar.gz
 download $pkgloc $pkgurl 3f923154ed47128f13b08eacd207d9ee
 

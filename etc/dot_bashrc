@@ -10,6 +10,7 @@ _hackon_impl() {
     namemunge LD_LIBRARY_PATH $YHROOT/usr/$1/lib
   fi
 }
+export -f _hackon_impl
 
 _hackoff_impl() {
   nameremove PATH $YHROOT/usr/$1/bin
@@ -19,6 +20,7 @@ _hackoff_impl() {
     nameremove LD_LIBRARY_PATH $YHROOT/usr/$1/lib
   fi
 }
+export -f _hackoff_impl
 
 ho() {
   if [ -z "$1" ] ; then
@@ -54,6 +56,7 @@ ho() {
     echo "$YHROOT/usr/$1 doesn't exist"
   fi
 }
+export -f ho
 
 # completion for hclone and hbuild.
 _hcommand_cmpl() {

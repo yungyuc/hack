@@ -37,7 +37,7 @@ elif [[ $FLAVOR == dbg* ]] ; then
 fi
 
 echo "configuration:"
-{ time $cmakecmd ../.. ; } > cmake.log 2>&1
+{ time "${cmakecmd[@]}" ../.. ; } > cmake.log 2>&1
 echo "configuration done: $(showrealpath cmake.log)"
 
 echo "make:"
