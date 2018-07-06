@@ -28,4 +28,11 @@ elif [ $(uname) == Linux ] ; then
   namemunge LD_LIBRARY_PATH $INSTALLDIR/lib
 fi
 
+buildcmd () {
+  echo "run command: ${@:2}"
+  { time "${@:2}" ; } > $1 2>&1
+  echo "done; log file: $(showrealpath $1)"
+}
+export -f buildcmd
+
 # vim: set et nu nobomb fenc=utf8 ft=sh ff=unix sw=2 ts=2:

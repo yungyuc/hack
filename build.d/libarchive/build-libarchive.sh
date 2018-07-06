@@ -4,12 +4,12 @@
 #
 # Python development guide: https://docs.python.org/devguide/
 
-pkgname=singularity
-pkgbranch=${VERSION:-2.5.2}
+pkgname=libarchive
+pkgbranch=${VERSION:-3.2.2}
 pkgfull=$pkgname-$pkgbranch
 pkgloc=$YHDL/$pkgfull.tar.gz
-pkgurl=https://github.com/singularityware/$pkgname/releases/download/$pkgbranch/$pkgfull.tar.gz
-download $pkgloc $pkgurl 2edc1a8ac9a4d7d26fba6244f1c5fd95
+pkgurl=https://www.libarchive.org/downloads/$pkgfull.tar.gz
+download $pkgloc $pkgurl 1ec00b7dcaf969dd2a5712f85f23c764
 
 # unpack (clone)
 mkdir -p $YHROOT/src/$FLAVOR
@@ -20,10 +20,6 @@ cd $pkgfull
 # build
 buildcmd configure.log ./configure --prefix=$INSTALLDIR
 buildcmd make.log make
-if [ -z "$SUDO" ] ; then
-  buildcmd install.log make install
-else
-  buildcmd install.log sudo make install
-fi
+buildcmd install.log make install
 
 # vim: set et nobomb ff=unix fenc=utf8:
