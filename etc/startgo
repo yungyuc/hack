@@ -1,0 +1,10 @@
+if [ -z "$YHFLAVOR" ] ; then
+  echo "YHFLAVOR unset; exit"
+else
+  export YHROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+  source $YHROOT/etc/bashutils.sh
+  namemunge PATH $YHROOT/usr/$YHFLAVOR/go/bin
+  export GOPATH=$YHROOT/usr/$YHFLAVOR/gopath
+  namemunge PATH $GOPATH/bin
+fi
+# vim: set et nobomb fenc=utf8 ft=sh ff=unix sw=2 ts=2:

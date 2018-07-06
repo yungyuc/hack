@@ -3,6 +3,7 @@ source $YHROOT/etc/bashutils.sh
 namemunge PATH $YHROOT/bin
 
 _hackon_impl() {
+  export YHFLAVOR=$1
   namemunge PATH $YHROOT/usr/$1/bin
   if [ "$(uname)" == "Darwin" ] ; then
     namemunge DYLD_LIBRARY_PATH $YHROOT/usr/$1/lib
@@ -19,6 +20,7 @@ _hackoff_impl() {
   elif [ "$(uname)" == "Linux" ] ; then
     nameremove LD_LIBRARY_PATH $YHROOT/usr/$1/lib
   fi
+  unset YHFLAVOR
 }
 export -f _hackoff_impl
 
