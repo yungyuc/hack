@@ -1,7 +1,18 @@
 #!/bin/bash
+#
+#   Tell where the hack src is by
+#       export YHROOT=<the hack src>
+#
 
 usage () {
   echo "usage: $(basename $0) [opt|dbg] script"
+  applications=`ls -x $YHROOT/build.d`
+  application_example="${applications%% *}"
+  echo ""
+  echo "The following applications are available to build:"
+  echo "    " ${applications}
+  echo ""
+  echo "Example: $(basename $0) opt ${application_example}"
 }
 
 if [[ $# -eq 1 ]] ; then
