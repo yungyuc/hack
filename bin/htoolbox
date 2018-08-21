@@ -1,0 +1,29 @@
+#!/bin/bash
+#
+#   A wrapper to build all tools by hbuild.
+#
+#     Usage: export YHROOT before executing this script
+#
+
+usage () {
+  echo "usage: $(basename $0) [opt|dbg]"
+}
+
+if [[ $# -eq 1 ]] ; then
+  export FLAVOR="${FLAVOR:=opt}"
+  echo "FLAVOR defaults to ${FLAVOR}"
+  applications=`ls -x ${YHROOT}/build.d`
+  pushd ${YHROOT}
+  for application in ${applications}
+  do
+    echo "Begin to build" ${application}
+    ${YHROOT}/bin/hbuild ${FLAVOR} ${application}
+    echo "Finish to build" ${application}
+  done
+  popd
+else
+  echo "wrong arguments"
+  usage ; exit
+fi
+
+# vim: set et nu nobomb fenc=utf8 ft=sh ff=unix sw=2 ts=2:
