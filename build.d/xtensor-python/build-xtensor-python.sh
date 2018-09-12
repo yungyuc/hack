@@ -2,10 +2,10 @@
 #
 # Copyright (C) 2011 Yung-Yu Chen <yyc@solvcon.net>.
 
-pkgname=pybind11
+pkgname=xtensor-python
 pkgbranch=${VERSION:-master}
 pkgfull=$pkgname-$pkgbranch
-pkgrepo=https://github.com/pybind/pybind11.git
+pkgrepo=https://github.com/QuantStack/$pkgname.git
 
 # unpack (clone)
 mkdir -p $YHROOT/src/$FLAVOR
@@ -14,8 +14,10 @@ if [ ! -d $pkgfull ] ; then
   git clone -q -b $pkgbranch $pkgrepo $pkgfull
 else
   cd $pkgfull
-  git co $pkgbranch
-  git pull origin $pkgbranch
+  if [[ `git branch | grep \* | cut -d ' ' -f2` == $pkgbranch ]] ; then
+    git co $pkgbranch
+    git pull origin $pkgbranch
+  fi
   cd ..
 fi
 cd $pkgfull
@@ -30,12 +32,8 @@ else
 fi
 
 # build.
-PYTHON=$INSTALLDIR/bin/python3
-
 cmakecmd=("cmake")
-cmakecmd+=("-DPYTHON_EXECUTABLE:FILEPATH=${PYTHON}")
 cmakecmd+=("-DCMAKE_INSTALL_PREFIX=${INSTALLDIR}")
-cmakecmd+=("-DPYBIND11_TEST=OFF")
 if [[ $FLAVOR == opt* ]] ; then
   cmakecmd+=("-DCMAKE_BUILD_TYPE=Release")
 elif [[ $FLAVOR == dbg* ]] ; then
