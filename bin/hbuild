@@ -18,12 +18,12 @@ usage () {
 if [[ $# -eq 1 ]] ; then
   scriptname=$1
   export SCRIPTDIR=$YHROOT/build.d/$scriptname
-  export FLAVOR="${FLAVOR:=opt}"
+  export FLAVOR="${FLAVOR:-opt}"
   echo "FLAVOR defaults to $FLAVOR"
 elif [[ $# -eq 2 ]] ; then
   scriptname=$2
   export SCRIPTDIR=$YHROOT/build.d/$scriptname
-  export FLAVOR="${FLAVOR:=$1}"
+  export FLAVOR="${FLAVOR:-$1}"
 else
   echo "wrong arguments"
   usage ; exit
@@ -60,7 +60,28 @@ download () {
 }
 export -f download
 
-YHDL="${YHDL:=$YHROOT/downloaded}"
+syncgit () {
+  local gitroot=$1
+  local pkgname=$2
+  local pkgbranch=$3
+  local pkgfull=$pkgname-$pkgbranch
+  local pkgrepo=$gitroot/$pkgname.git
+
+  # unpack (clone)
+  mkdir -p $YHROOT/src/$FLAVOR
+  pushd $YHROOT/src/$FLAVOR
+  if [ ! -d $pkgfull ] ; then
+    git clone -q -b $pkgbranch $pkgrepo $pkgfull
+    pushd $pkgfull
+  else
+    pushd $pkgfull
+    git co $pkgbranch
+    git pull origin $pkgbranch
+  fi
+}
+export -f syncgit
+
+YHDL="${YHDL:-$YHROOT/downloaded}"
 mkdir -p $YHDL
 export YHDL="$(cd $YHDL && pwd)"
 
