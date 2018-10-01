@@ -46,4 +46,7 @@ buildcmd cmake.log "${cmakecmd[@]}" ../..
 buildcmd make.log make
 buildcmd install.log make install
 
+cd $YHROOT/src/$FLAVOR/$pkgfull
+buildcmd build/setup.log $PYTHON setup.py install
+
 # vim: set et nobomb ff=unix fenc=utf8:
