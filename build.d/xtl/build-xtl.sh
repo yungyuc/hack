@@ -14,8 +14,10 @@ if [ ! -d $pkgfull ] ; then
   git clone -q -b $pkgbranch $pkgrepo $pkgfull
 else
   cd $pkgfull
-  git co $pkgbranch
-  git pull origin $pkgbranch
+  if [[ `git branch | grep \* | cut -d ' ' -f2` == $pkgbranch ]] ; then
+    git co $pkgbranch
+    git pull origin $pkgbranch
+  fi
   cd ..
 fi
 cd $pkgfull
