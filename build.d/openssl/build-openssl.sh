@@ -4,11 +4,11 @@
 
 # download.
 pkgname=openssl
-pkgver=${VERSION:-1.1.0h}
+pkgver=${VERSION:-1.1.1b}
 pkgfull=$pkgname-$pkgver
-pkgloc=$YHDL/$pkgfull.tar.xz
+pkgloc=$YHDL/$pkgfull.tar.gz
 pkgurl=https://www.openssl.org/source/$pkgfull.tar.gz
-download $pkgloc $pkgurl 5271477e4d93f4ea032b665ef095ff24
+download $pkgloc $pkgurl 4532712e7bcc9414f5bce995e4e13930
 
 # unpack.
 mkdir -p $YHROOT/src/$FLAVOR
@@ -17,9 +17,10 @@ tar xf $pkgloc
 cd $pkgfull
 
 # build.
-{ time ./config --prefix=$INSTALLDIR --openssldir=$INSTALLDIR/share/ssl ; } \
-  > configure.log 2>&1
-{ time make -j $NP ; } > make.log 2>&1
-{ time make -j $NP install ; } > install.log 2>&1
+buildcmd configure.log ./config \
+  --prefix=$INSTALLDIR \
+  --openssldir=$INSTALLDIR/share/ssl
+buildcmd make.log make -j $NP
+buildcmd install.log make -j $NP install
 
 # vim: set et nobomb ff=unix fenc=utf8:

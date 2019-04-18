@@ -5,9 +5,9 @@
 # Python development guide: https://docs.python.org/devguide/
 
 pkgname=python
-pkgbranch=${VERSION:-3.6}
+pkgbranch=${VERSION:-3.7}
 pkgfull=$pkgname-$pkgbranch
-pkgrepo=http://github.com/python/cpython
+pkgrepo=https://github.com/python/cpython.git
 
 # unpack (clone)
 mkdir -p $YHROOT/src/$FLAVOR
@@ -20,13 +20,14 @@ cd $pkgfull
 # build
 PREFIX=$INSTALLDIR
 ARCH=64
+brewssldir=/usr/local/opt/openssl
 
 mkdir -p $PREFIX/lib
 mkdir -p $PREFIX/include
 
 if [ $(uname) == Darwin ]; then
-  export CPPFLAGS="-I$PREFIX/include -I/usr/local/opt/openssl/include $CPPFLAGS"
-  export LDFLAGS="-Wl,-rpath,$PREFIX/lib -L$PREFIX/lib -L/usr/local/opt/openssl/lib -headerpad_max_install_names $LDFLAGS"
+  export CPPFLAGS="-I$PREFIX/include -I$brewssldir/include $CPPFLAGS"
+  export LDFLAGS="-Wl,-rpath,$PREFIX/lib -L$PREFIX/lib -L$brewssldir/lib -headerpad_max_install_names $LDFLAGS"
   sed -i -e "s/@OSX_ARCH@/$ARCH/g" Lib/distutils/unixccompiler.py
 elif [ $(uname) == Linux ]; then
   export CPPFLAGS="-I$PREFIX/include"
@@ -40,23 +41,18 @@ cfgcmd+=("--enable-ipv6")
 cfgcmd+=("--with-ensurepip=no")
 cfgcmd+=("--with-tcltk-includes=-I$PREFIX/include")
 cfgcmd+=("--with-tcltk-libs=\"-L$PREFIX/lib -ltcl8.5 -ltk8.5\"")
+if [[ $(uname) == Darwin ]] && [[ $VERSION == 3.7* ]] ; then
+  cfgcmd+=("--with-openssl=$brewssldir")
+fi
 #cfgcmd+=("--enable-loadable-sqlite-extensions")
 if [[ $FLAVOR == dbg* ]] ; then
   cfgcmd+=("--with-pydebug")
 fi
 
-echo "start configuration:"
-echo "${cfgcmd[@]}"
-{ time "${cfgcmd[@]}" ; } > configure.log 2>&1
-echo "configuration done: $(showrealpath configure.log)"
-
-echo "start building:"
-{ time make -j $NP ; } > make.log 2>&1
-echo "build done: $(showrealpath make.log)"
-
-echo "start installation to ($PREFIX):"
-{ time make install ; } > install.log 2>&1
-echo "installation done: $(showrealpath install.log)"
+# build.
+buildcmd configure.log "${cfgcmd[@]}"
+buildcmd make.log make -j $NP
+buildcmd install.log make install
 
 #rm -f $PREFIX/bin/python $PREFIX/bin/pydoc
 #ln -s $PREFIX/bin/python3.7 $PREFIX/bin/python

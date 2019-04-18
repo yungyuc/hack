@@ -34,7 +34,8 @@ elif [ $(uname) == Linux ]; then
     Makefile.inc
 fi
 export LDFLAGS="-L$INSTALLDIR/lib $LDFLAGS"
-{ time make -j $NP ; } > make.log 2>&1
+
+buildcmd make.log make -j $NP
 cd ..
 
 # install.
