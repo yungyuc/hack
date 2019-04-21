@@ -19,12 +19,7 @@ cd $pkgfull
 # build.
 PYTHON=$INSTALLDIR/bin/python3
 
-echo "start building:"
-{ time $PYTHON setup.py build -j $NP ; } > build.log 2>&1
-echo "building done: $(showrealpath build.log)"
-
-echo "start installation:"
-{ time $PYTHON setup.py install ; } > install.log 2>&1
-echo "installation done: $(showrealpath install.log)"
+buildcmd build.log $PYTHON setup.py build -j $NP
+buildcmd install.log $PYTHON setup.py install
 
 # vim: set et nobomb ff=unix fenc=utf8:

@@ -17,11 +17,8 @@ tar xf $pkgloc
 cd $pkgfull
 
 # build.
-{ time ./configure \
-  --prefix=$INSTALLDIR \
-; } > configure.log 2>&1
-#  --with-hdf5=$INSTALLDIR \
-{ time make -j $NP ; } > make.log 2>&1
-{ time make install ; } > install.log 2>&1
+buildcmd configure.log ./configure --prefix=$INSTALLDIR
+buildcmd make.log make -j $NP
+buildcmd install.log make install
 
 # vim: set et nobomb ff=unix fenc=utf8:

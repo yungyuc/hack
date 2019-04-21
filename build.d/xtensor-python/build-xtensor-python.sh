@@ -41,7 +41,7 @@ elif [[ $FLAVOR == dbg* ]] ; then
 fi
 
 buildcmd cmake.log "${cmakecmd[@]}" ../..
-buildcmd make.log make
+buildcmd make.log make -j $NP
 buildcmd install.log make install
 
 # vim: set et nobomb ff=unix fenc=utf8:

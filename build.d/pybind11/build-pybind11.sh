@@ -43,7 +43,7 @@ elif [[ $FLAVOR == dbg* ]] ; then
 fi
 
 buildcmd cmake.log "${cmakecmd[@]}" ../..
-buildcmd make.log make
+buildcmd make.log make -j $NP
 buildcmd install.log make install
 
 cd $YHROOT/src/$FLAVOR/$pkgfull

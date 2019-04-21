@@ -48,7 +48,7 @@ mkdir -p build
 cd build
 
 # build.
-{ time cmake \
+buildcmd cmake.log cmake \
   -DCMAKE_PREFIX_PATH=$INSTALLDIR \
   -DCMAKE_INSTALL_PREFIX=$INSTALLDIR \
   -DENABLE_NUMPY=ON \
@@ -56,8 +56,8 @@ cd build
   -DENABLE_MATCH=OFF \
   -DENABLE_PETSC=OFF \
   -DENABLE_SLEPC=OFF \
-  .. ; } > cmake.log 2>&1
-{ make -j $NP VERBOSE=1 ; } > make.log 2>&1
-{ make install ; } > install.log 2>&1
+  ..
+buildcmd make.log make -j $NP VERBOSE=1
+buildcmd install.log make install
 
 # vim: set et nobomb ff=unix fenc=utf8:

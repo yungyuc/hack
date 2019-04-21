@@ -27,7 +27,7 @@ export -f _hackoff_impl
 ho() {
   if [ -z "$1" ] ; then
     if echo "$PATH" | grep -q "$YHROOT/usr" ; then
-      echo "$(which python3)"
+      echo $YHFLAVOR
     else
       echo "not hacking; available environment:" `/bin/ls $YHROOT/usr`
     fi
@@ -37,13 +37,14 @@ ho() {
     echo "available environment:" `/bin/ls $YHROOT/usr`
     return
   elif [ "$1" == "off" ] ; then
-    if [ -z "$(which python3)" ] ; then
-      echo "no python3 found in path"
+    if [ -z "$YHFLAVOR" ] ; then
+      echo "\$YHFLAVOR not defined"
       return
     fi
-    echo "$(cd "$(dirname "$(which python3)")/.." && pwd) to be turned off"
+    echo "$YHFLAVOR to be turned off"
+    _flavor=$YHFLAVOR
     _hackoff_impl common
-    _hackoff_impl $(basename $(cd "$(dirname "$(which python3)")/.." && pwd))
+    _hackoff_impl $_flavor
     return
   fi
   if [ -n "$2" ] && [ "$2" == "off" ] ; then
