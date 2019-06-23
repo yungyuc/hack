@@ -30,7 +30,7 @@ if [ $(uname) == Darwin ]; then
   export LDFLAGS="-Wl,-rpath,$PREFIX/lib -L$PREFIX/lib -L$brewssldir/lib -headerpad_max_install_names $LDFLAGS"
   sed -i -e "s/@OSX_ARCH@/$ARCH/g" Lib/distutils/unixccompiler.py
 elif [ $(uname) == Linux ]; then
-  export CPPFLAGS="-I$PREFIX/include"
+  export CPPFLAGS="-I$PREFIX/include $CPPFLAGS"
   export LDFLAGS="-L$PREFIX/lib -Wl,-rpath=$PREFIX/lib,--no-as-needed"
 fi
 
