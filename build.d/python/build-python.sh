@@ -12,8 +12,13 @@ pkgrepo=https://github.com/python/cpython.git
 # unpack (clone)
 mkdir -p $YHROOT/src/$FLAVOR
 cd $YHROOT/src/$FLAVOR
-if [ ! -d $pkgrepo ] ; then
+if [ ! -d $pkgfull ] ; then
   git clone -q -b $pkgbranch $pkgrepo $pkgfull
+else
+  cd $pkgfull
+  git co $pkgbranch
+  git pull origin $pkgbranch
+  cd ..
 fi
 cd $pkgfull
 
