@@ -31,11 +31,6 @@ fi
 
 if [ -f $YHROOT/etc/buildutils.sh ]; then source $YHROOT/etc/buildutils.sh; fi
 
-showrealpath () {
- echo "$(cd "$(dirname $1)" && pwd)/$1"
-}
-export -f showrealpath
-
 download () {
   local loc=$1
   local url=$2

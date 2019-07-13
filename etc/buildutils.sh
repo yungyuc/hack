@@ -28,6 +28,11 @@ elif [ $(uname) == Linux ] ; then
   namemunge LD_LIBRARY_PATH $INSTALLDIR/lib
 fi
 
+showrealpath () {
+ echo "$(cd "$(dirname $1)" && pwd)/$1"
+}
+export -f showrealpath
+
 buildcmd () {
   echo "run command: ${@:2}"
   { time "${@:2}" ; } > $1 2>&1
