@@ -4,11 +4,11 @@
 
 # download cmake.
 pkgname=Cython
-pkgver=${VERSION:-0.28.3}
+pkgver=${VERSION:-0.29.21}
 pkgfull=$pkgname-$pkgver
 pkgloc=$YHDL/$pkgfull.tar.gz
-pkgurl=https://files.pythonhosted.org/packages/b3/ae/971d3b936a7ad10e65cb7672356cff156000c5132cf406cb0f4d7a980fd3/$pkgfull.tar.gz
-download $pkgloc $pkgurl 586f0eb70ba1fcc34334e9e10c5e68c0
+pkgurl=https://files.pythonhosted.org/packages/6c/9f/f501ba9d178aeb1f5bf7da1ad5619b207c90ac235d9859961c11829d0160/$pkgfull.tar.gz
+download $pkgloc $pkgurl 12c5e45af71dcc6dff28cdcbcbef6f39
 
 # unpack.
 mkdir -p $YHROOT/src/$FLAVOR
