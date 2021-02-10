@@ -27,7 +27,19 @@ EOF
 fi
 
 rm -f setup.cfg
-cat > setup.cfg << EOF
+cat >> setup.cfg << EOF
+# See the docstring in versioneer.py for instructions. Note that you must
+# re-run 'versioneer.py setup' after changing this section, and commit the
+# resulting files.
+
+[versioneer]
+VCS = git
+style = pep440
+versionfile_source = numpy/_version.py
+versionfile_build = numpy/_version.py
+tag_prefix = v
+parentdir_prefix = numpy-
+
 [config_fc]
 fcompiler = gfortran
 EOF
