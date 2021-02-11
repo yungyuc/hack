@@ -12,10 +12,16 @@ syncgit https://github.com/numpy $pkgname $pkgbranch
 PYTHON=$INSTALLDIR/bin/python3
 rm -f site.cfg
 if [ $(uname) == Darwin ] ; then
+  echo "Darwin"
   cat > site.cfg << EOF
-[atlas]
-library_dirs = /usr/lib:/usr/local/lib
-include_dirs = /usr/lib:/usr/local/include
+# Use OpenBLAS (homebrew install) with Numpy, since as of today (20210211)
+# accelerate backend has a bug with numpy:
+# https://github.com/numpy/numpy/issues/15947
+[openblas]
+libraries = openblas
+library_dirs = /usr/local/opt/openblas/lib
+include_dirs = /usr/locla/opt/openblas/include
+runtime_library_dirs = /usr/local/opt/openblas/lib
 EOF
 elif [ $(uname) == Linux ] ; then
   cat > site.cfg << EOF
@@ -47,12 +53,8 @@ EOF
 buildcmd build.log $PYTHON setup.py build -j $NP
 buildcmd install.log $PYTHON setup.py install --old-and-unmanageable
 
-# How to check numpy atlas status: http://stackoverflow.com/a/23325759/1805420:
-# python -c "import numpy.distutils.system_info as si; si.get_info('atlas', 2)"
-cd $YHROOT
-mkdir -p $YHROOT/tmp
-$PYTHON -c \
-  "import numpy.distutils.system_info as si; si.get_info('atlas', 2)" \
-  > $YHROOT/tmp/atlas_status.log 2>&1
+# Check lapack version.
+# https://stackoverflow.com/a/19350234
+$PYTHON -c "import numpy as np ; np.show_config()"
 
 # vim: set et nobomb ff=unix fenc=utf8:
